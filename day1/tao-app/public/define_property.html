@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        var objA = {name: '张三'};
+        console.log(objA.name)
+        objA.name = '李四';
+        console.log(objA.name)
+
+        var objB = {};
+        (function () {
+            var ___name;
+            Object.defineProperty(objB, 'name', {
+                get() {
+                    return ___name;
+                },
+                set(value) {
+                    if (value !== ___name) {
+
+                    }
+                    console.log(value);
+                    ___name = value;
+                }
+            });
+        })();
+        console.log(objB.name);
+        objB.name = '小张';
+        console.log(objB.name)
+
+        var obj = {
+            name: 'zhang',
+            sex: '女',
+            age: 18
+        };
+
+        console.log(obj)
+        var hideObj = {};
+        for (let p in obj) {
+            (function (p, v) {
+                Object.defineProperty(hideObj, p, {
+                    get() {
+                        return v;
+                    },
+                    set(value) {
+                        v = value;
+                    }
+                })
+            })(p, obj[p]);
+        }
+        console.log(hideObj)
+
+    </script>
+</body>
+</html>

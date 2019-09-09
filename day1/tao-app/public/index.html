@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+    <script src="lib/axios.min.js"></script>
+</head>
+<body>
+学生管理
+    <div id="app">
+        <button v-on:click="del_all('hello', $event, 'world')">清楚全部</button>
+        <table border="1">
+            <thead>
+                <tr>
+                    <td>姓名</td>
+                    <td>年龄</td>
+                    <td>性别</td>
+                    <td>分数</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="student in students">
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.age }}</td>
+                    <td>
+                        <img width="100" v-if="student.sex == '男'" src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1700741544,1951185347&fm=26&gp=0.jpg">
+                        <img width="100" v-else src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3136075639,3338708347&fm=26&gp=0.jpg" />
+                    </td>
+                    <td>{{ student.score }}</td>
+                    <td>
+                        <button v-on:click="del_student(student)">删除</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>合计</td>
+                    <td>{{ total_age }}</td>
+                    <td></td>
+                    <td>{{ total_score }}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <hr/>
+        <div>
+            <div>
+                姓名: <input ref="u_name" type="text">
+            </div>
+            <div>
+                年龄: <input ref="u_age" type="number">
+            </div>
+            <div>
+                性别: <select ref="u_sex">
+                <option>男</option>
+                <option>女</option>
+            </select>
+            </div>
+            <div>
+                分数: <input ref="u_score" type="number">
+            </div>
+            <button v-on:click="add_student">提交</button>
+        </div>
+    </div>
+
+    <script>
+        let myvue = new Vue({
+            el: '#app',
+            data: {
+                students: [] // 属性
+            },
+            mounted() { // 当vue 实例 挂载到 界面上 会被主动调用
+                console.log(this);
+                axios.get('/student/get_student_list').then((result) => {
+                    console.log(result.data);
+                    this.students = result.data;
+                }).catch(function (err) {
+                    console.error(err);
+                })
+            },
+            methods: {
+                add_student() {
+                    this.students.push({
+                        name: this.$refs.u_name.value,
+                        age: Number(this.$refs.u_age.value),
+                        sex: this.$refs.u_sex.value,
+                        score: Number(this.$refs.u_score.value)
+                    });
+
+                    this.$refs.u_name.value = '';
+                    this.$refs.u_age.value = '';
+                    this.$refs.u_sex.value = '';
+                    this.$refs.u_score.value = '';
+
+                },
+                del_student(student) {
+                    console.log('del')
+                    console.log(this);
+                    console.log(this === myvue);
+                    let position = this.students.indexOf(student);
+                    this.students.splice(position, 1)
+
+                },
+                del_all(aaa, event, item) {
+                    console.log(aaa)
+                    console.log(event);
+                    console.log(item)
+                    this.students = [];
+                }
+            },
+            computed: { // 计算属性
+                total_score() {
+                    let total = 0;
+                    for (let student of this.students) {
+                        total = total + student.score;
+                    }
+                    return total;
+                },
+                total_age() {
+                    let total = 0;
+                    for (let student of this.students) {
+                        total = total + student.age;
+                    }
+                    return total;
+                }
+            }
+        });
+
+        console.log(myvue);
+        console.log(myvue.students);
+    </script>
+
+    <script>
+        function add_Stu() {
+            console.log(myvue.total_score);
+            myvue.students.push({
+                name: '张张',
+                age: 17,
+                score: 100,
+                sex: '男'
+            });
+
+            console.log(myvue.total_score);
+        }
+        function delall() {
+            myvue.del_all();
+        }
+        function loadAll() {
+            axios.get('/student/get_student_list').then(function (result) {
+                console.log(result.data);
+                myvue.students = result.data;
+            }).catch(function (err) {
+                console.error(err);
+            })
+        }
+    </script>
+    <button onclick="add_Stu()"> 添加</button>
+    <button onclick="delall()">清楚</button>
+    <button onclick="loadAll()">加载数据</button>
+</body>
+</html>

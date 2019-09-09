@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+    <style>
+        .done {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <input ref="taskText" type="text" /> <button v-on:click="addTask($event)">添加</button>
+    <ul>                          <!-- 绑定 css 样式  -->
+        <li v-for="task in tasks" v-bind:class="{done: task.done}">
+            <input
+                type="checkbox"
+                v-on:click="changeCheck($event, task)"
+                v-bind:checked="task.done" />
+
+            {{ task.text }} , {{ task.done }}
+        </li>
+    </ul>
+    <p>
+        一共{{ taskCount }}任务,
+        已经完成 {{ taskDoneCount }},
+        未完成 {{ taskCount - taskDoneCount }}, {{ taskUndoneCount }}
+    </p>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            tasks: []
+        },
+        methods: {  // 方法定义
+            changeCheck(event, task) {
+                console.log(event);
+                console.log(event.target.checked)
+                task.done = event.target.checked;
+            },
+            addTask(event) { // 事件对象
+                this.tasks.push({
+                    text: this.$refs.taskText.value,
+                    done: false
+                });
+                this.$refs.taskText.value = '';
+            }
+        },
+        computed: { // 计算属性
+            taskCount: function () {
+                return this.tasks.length;
+            },
+            taskDoneCount() {
+                let doneCount = 0;
+                for (let task of this.tasks) {
+                    doneCount += task.done ? 1 : 0;
+                }
+                return doneCount;
+            },
+            taskUndoneCount() {
+                return this.taskCount - this.taskDoneCount;
+            }
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>{{ welcome }}</p>
+        <input v-model="welcome" /> <!-- 语法糖 -->
+        <hr/>
+        <input v-on:input="changeValue" v-bind:value="welcome" />
+    </div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            welcome: 'hello world'
+        },
+        methods: {
+            changeValue(event) {
+                console.log(event)
+                this.welcome = event.target.value;
+            }
+        }
+    })
+</script>
+</body>
+</html>
