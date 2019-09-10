@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+    <script>
+        var students = [
+            {name: '张', sex: '男'},
+            {name: '王', sex: '女'},
+            {name: '李', sex: '男'},
+            {name: '赵', sex: '女'},
+        ];
+
+        students.push({
+            name: '刘', sex: '女'
+        });
+
+        console.log(students);
+
+        let oldStudent = students.pop();
+
+        console.log(oldStudent);
+
+        console.log(students);
+
+        let boy = students.filter(function (student) {
+            return student.sex === '男'
+        });
+
+
+        console.log(boy);
+
+        let sss = students.concat(['hello', 'world']);
+
+        console.log(sss)
+
+        let ps = students.map(function (student) {
+            return `<p>${student.name}, ${student.sex}</p>`
+        })
+
+        console.log(ps);
+
+    </script>
+</body>
+</html>

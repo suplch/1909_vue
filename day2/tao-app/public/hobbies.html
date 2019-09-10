@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+</head>
+<body>
+<div id="app">
+        <select v-model="selectedHobbies" multiple style="height: 500px; width: 200px; float:left;">
+            <option v-for="hobby of hobbies" v-bind:value="hobby">{{hobby.text}}</option>
+        </select>
+
+        <select v-model="selectedMyHobbies" multiple style="height: 500px; width: 200px; float: right">
+            <option v-for="hobby of myHobbies" v-bind:value="hobby">{{hobby.text}}</option>
+        </select>
+    <div style="position: absolute; top: 510px; left: 400px">
+        <button @click="moveRight"> &gt;&gt; </button>
+        <button @click="moveLeft"> &lt;&lt; </button>
+    </div>
+    {{ selectedHobbies }}
+    <hr/>
+    {{ selectedMyHobbies }}
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            hobbies: [
+                {text: '打游戏', level: 5},
+                {text: '旅游', level: 5},
+                {text:  '登山', level: 5},
+                {text: '睡觉', level: 5},
+                {text: '看电视', level: 5},
+                {text: '上网', level: 5},
+            ],
+            selectedHobbies: [],
+            myHobbies: [],
+            selectedMyHobbies: []
+        },
+        methods: {
+            moveRight() {
+                for (let h of this.selectedHobbies) {
+                    this.myHobbies.push(h);
+                }
+                this.hobbies = this.hobbies.filter((h) => {
+                    return this.selectedHobbies.indexOf(h) === -1
+                });
+                this.selectedHobbies = [];
+            },
+
+            moveLeft() {
+                for (let h of this.selectedMyHobbies) {
+                    this.hobbies.push(h);
+                }
+                this.myHobbies = this.myHobbies.filter((h) => {
+                    return this.selectedMyHobbies.indexOf(h) === -1
+                });
+                this.selectedMyHobbies = [];
+            }
+        }
+    })
+</script>
+</body>
+</html>

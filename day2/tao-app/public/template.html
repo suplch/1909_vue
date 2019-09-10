@@ -44,6 +44,7 @@
     <ul>
         <li v-for="(hobby, no) of hobbies">{{no}}, {{ hobby }}</li>
     </ul>
+    <button @click="changeHobby()">改变爱好</button>
     <hr/>
 
     <ul>
@@ -78,6 +79,12 @@
                 name: 'zhang',
                 age: 18,
                 score: '100'
+            }
+        },
+        methods: {
+            changeHobby() {
+                //this.hobbies[2] = '爱学习'
+                Vue.set(this.hobbies, 2, '爱学习')
             }
         }
     })

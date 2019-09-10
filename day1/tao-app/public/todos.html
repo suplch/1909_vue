@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="app">
-    <input ref="taskText" type="text" v-on:keydown="down($event)" /> <button v-on:click="addTask($event)">添加</button>
+    <input ref="taskText" type="text" v-on:keydown.enter="down($event)" /> <button v-on:click="addTask($event)">添加</button>
     <ul>                          <!-- 绑定 css 样式  -->
         <li v-for="task in tasks" v-bind:class="{done: task.done}">
             <input
@@ -50,9 +50,8 @@
                 this.$refs.taskText.value = '';
             },
             down(event) {
-                if (event.keyCode === 13) {
-                    this.addTask();
-                }
+                this.addTask();
+
             }
         },
         computed: { // 计算属性

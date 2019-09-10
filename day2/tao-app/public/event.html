@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+</head>
+<body>
+<div id="app">
+
+    <div @click="clickDiv" style="border: solid 5px red; width: 200px; height: 200px">
+
+        <div @click.capture="clickMiddleDiv()" style="border: solid 5px green; width: 100px; height: 100px">
+            <button @click.stop="clickButton">点击我</button>
+            <button @click="clickCapture"> capture</button>
+            <a @click.prevent="showMsg($event)" href="http://www.baidu.com">go to</a>
+
+        </div>
+
+    </div>
+
+    <div @click.alt="selfClick" style="border: solid 5px blue; width: 200px; height: 200px">
+        <button>button</button>
+    </div>
+
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        methods: {
+            clickButton(event) {
+                console.log('click button')
+            },
+            clickDiv() {
+                console.log('click div');
+            },
+            showMsg(event) {
+                alert('hello');
+            },
+            clickCapture() {
+                console.log('capture')
+            },
+            clickMiddleDiv() {
+                console.log('middle div')
+            },
+            selfClick(event) {
+                console.log('self')
+                console.log(event);
+            }
+        }
+    })
+</script>
+</body>
+</html>
