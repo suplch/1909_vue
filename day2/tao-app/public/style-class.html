@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+    <style>
+        .base {
+            width: 300px;
+            height: 300px;
+            border: 5px solid red;
+        }
+        .box {
+            background: green;
+        }
+        .shadow {
+            box-shadow: 5px 5px 5px black;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="base" :class="{box: applyBox, shadow: applyShadow}"></div>
+    <div class="base" :class="boxClass"></div>
+    <hr/>
+
+    <button @click="applyBox = !applyBox">applyBox</button>
+    <button @click="applyShadow = !applyShadow">applyBox</button>
+    <hr/>
+    <button @click="applyBoxClass">applyBox</button>
+    <button @click="boxClass.shadow = !boxClass.shadow">applyBox</button>
+
+    <div :class="['base', 'box', 'shadow']"></div>
+    <div @click="arrayClass.pop()" :class="arrayClass"></div>
+    <hr/>
+    <div style="border: solid 5px red; width: 500px; height: 500px;"></div>
+
+    <div :style="{border: 'solid 5px red', width: '500px', height: '500px'}"></div>
+    <div @click="changeToGreen" :style="styleObj"></div>
+    <hr/>
+    <div :style="[{border: 'solid 5px red'}, {width: '400px', height: '300px'}]">aaaaa</div>
+    <div :style="styleObj2">bbbb</div>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            applyBox: false,
+            applyShadow: false,
+            boxClass: {
+                box: false,
+                shadow: false
+            },
+            arrayClass: ['base', 'box', 'shadow'],
+            styleObj: {
+                border: 'solid 5px green',
+                width: '500px',
+                height: '500px',
+                //backgroundColor: 'red'
+            },
+            styleObj2: [{border: 'solid 5px red'}, {width: '400px', height: '300px'}]
+        },
+        methods: {
+            applyBoxClass() {
+                this.boxClass.box = !this.boxClass.box
+            },
+            changeToGreen() {
+                // this.styleObj.backgroundColor = 'green'
+                Vue.set(this.styleObj, 'backgroundColor', 'green');
+            }
+        }
+    })
+</script>
+</body>
+</html>

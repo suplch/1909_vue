@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    {{ 1 + 1 }}
+    <hr/>
+    {{ welcome }}
+    <hr/>
+    {{ welcome.length }}
+    <hr/>
+    {{ welcome.substr(10) }}
+    <hr/>
+    {{ city + welcome }}
+    <hr/>
+    {{ address.street }}
+    <hr/>
+    {{ address }}
+    <hr/>
+    {{ content }}
+    <span v-html="content"></span>
+    <span v-html="usertext"></span>
+
+    <input :type="inputType" v-bind:value='"\"hello\""' />
+    <button @click="inputType = 'text'">change</button>
+    <hr/>
+
+    <div v-if="show1" style="border: solid 5px red;">
+        v-if 实例
+    </div>
+    <div v-show="show1" style="border: solid 5px green">
+        v-show
+    </div>
+    <button v-on:click="show1 = !show1">shwo red box</button>
+
+    <ul>
+        <li v-for="(hobby, index) in hobbies">{{index}} , {{ hobby }}</li>
+    </ul>
+
+    <ul>
+        <li v-for="(hobby, no) of hobbies">{{no}}, {{ hobby }}</li>
+    </ul>
+    <hr/>
+
+    <ul>
+        <li v-for="(v, key) in obj">{{key}} , {{v}}</li>
+    </ul>
+
+    <ul>
+        <li v-for="(v, key) of obj">{{key}} , {{v}}</li>
+    </ul>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            show1: true,
+            inputType: 'password',
+            welcome: 'welcome to shenzheng',
+            city: 'beijing',
+            address: {
+                street: '西部硅谷'
+            },
+            hello: '你好',
+            content: '<h1>Hello world</h1>',
+            usertext: 'aa<script>alert(123)<\/script>bb',
+            hobbies: [
+                '旅游',
+                '逛街',
+                '打游戏'
+            ],
+            obj: {
+                name: 'zhang',
+                age: 18,
+                score: '100'
+            }
+        }
+    })
+</script>
+</body>
+</html>

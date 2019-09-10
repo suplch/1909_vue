@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <table border="1" width="100%">
+        <tbody>
+            <tr v-for="node in nodes">
+                <td>
+                    <div :style="{marginLeft: node.level * 20 + 'px'}">
+                        <button v-if="node.children" v-on:click="open(node)">{{ node.open ? '-': '+'}}</button>
+                        <div v-else style="width: 22px; display: inline-block"></div>
+                        {{ node.name }}
+                    </div>
+                </td>
+                <td>{{ node.population }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function forEachTree(root, level, fn) {
+        root.level = level;
+        fn(root);
+        if (root.open && root.children) {
+            for (let node of root.children) {
+                forEachTree(node, level + 1, fn);
+            }
+        }
+    }
+
+    new Vue({
+        el: '#app',
+        data: {
+            root: {
+                name: '中国',
+                population: 10000,
+                open: false,
+                children: [
+                    {
+                        name: '北京',
+                        population: 111,
+                    },
+                    {
+                        name: '广东',
+                        population: 300,
+                        open: false,
+                        children: [
+                            {
+                                name: '广州',
+                                population: 50
+                            }
+                        ]
+                    },
+                    {
+                        name: '广西',
+                        population: 200,
+                    }
+                ]
+            }
+        },
+        methods: {
+            open(node) {
+                node.open = !node.open;
+            }
+        },
+        computed: {
+            nodes() {
+                let nodes = [];
+                forEachTree(this.root, 0, (node) => {
+                    nodes.push(node);
+                });
+                return nodes;
+            }
+        }
+    })
+</script>
+</body>
+</html>
