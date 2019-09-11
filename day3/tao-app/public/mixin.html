@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+    <script src="mixtest.js"></script>
+</head>
+<body>
+<div id="app">
+
+    {{ name }} , {{ age }}, {{ address }}, {{ test }}
+    <hr/>
+    {{ testName }}
+    <hr/>
+    <ul>
+        <li v-for="hobby of hobbies">
+            {{hobby}}
+        </li>
+    </ul>
+    <button @click="addHobby">add</button>
+
+</div>
+
+<script>
+
+    new Vue({
+        mixins: [obj, obj2],
+        el: '#app',
+        mounted() {
+            console.log('我被挂载了, 来自于  mixin.html')
+        },
+        data: {
+            name: '张三',
+            age: 18
+        },
+        methods: {
+            addHobby() {
+                this.hobbies.push('css')
+            }
+        }
+    })
+</script>
+</body>
+</html>

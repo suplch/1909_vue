@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+</head>
+<body>
+<div id="app"> <!-- v-on:multiple 监听multiple 自定义事件 -->
+    <parent ref="p" v-on:multiple="printMultiple"
+            v-bind:name="person.name"
+            v-bind:sex="person.sex"
+            :salary="person.salary"
+            v-bind:person="person" ></parent>
+    <button @click="changePerson">change person info</button>
+    <hr/>
+    {{ msg }}
+    <button @click="visitParent">访问parent 组件实例</button>
+</div>
+<script>
+    Vue.component('parent', {
+        // props: ['name', 'sex', 'salary', 'person'],
+        props: {
+            name: String,
+            sex: String,
+            salary: Number,
+            person: Object
+        },
+        template: `
+            <div style="border: 5px red solid; width: 500px; height: 200px;">
+                parent
+                <hr/>
+                {{ name }}, {{ sex }}, {{ salary }}
+                <hr/>
+                {{ person }}
+                <hr/>
+                {{ count }} <button @click="inc">+</button>
+                <hr/>
+            </div>
+        `,
+        data() {
+            return {
+                count: 0
+            }
+        },
+        methods: {
+            inc() {
+                this.count++;
+                if (this.count % 10 === 0) {
+                    // 广播, 发送 一个multiple事件,
+                    // 传递事件参数 {count}
+                    this.$emit('multiple', {
+                        count: this.count
+                    });
+                }
+            }
+        }
+    });
+    new Vue({
+        el: '#app',
+        data () {
+            return {
+                welcome: 'hello !!!',
+                person: {
+                    name: '张三',
+                    sex: '男',
+                    salary: 1000
+                },
+                msg: ''
+            }
+        },
+        methods: {
+            changePerson() {
+                this.person = {
+                    name: '李四',
+                    sex: '女',
+                    salary: 999
+                }
+            },
+            printMultiple(event) {
+                console.log('自定义事件', event)
+                this.msg = event.count;
+            },
+            visitParent() {
+
+                console.log(this.$refs.p);
+                this.$refs.p.inc();
+            }
+        }
+    })
+</script>
+</body>
+</html>

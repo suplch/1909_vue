@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    {{ welcome }}
+    <hr/>
+    {{ welcometo }}, {{ welcometo }}, {{ welcometo }}
+    <hr/>
+    {{ huanying() }}, {{ huanying() }}, {{ huanying() }}
+    <hr/>
+    {{ msg }}<br/>
+    <input v-model="welcome" type="text" />
+    <button @click="welcome = '欢迎'" style="background: red">改变</button>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            welcome: 'welcome to',
+            msg: ''
+        },
+        computed: {
+            welcometo() {
+                console.log('开始计算 from 计算属性');
+                return this.welcome + ' 深圳';
+            }
+        },
+        methods: {
+            huanying() {
+                console.log('开始计算 from 方法');
+                return this.welcome + ' 深圳';
+            }
+        },
+        watch: {
+            welcome(val) {
+                this.msg = '正在输入中....';
+
+                if (this.tid) {
+                    clearTimeout(this.tid);
+                }
+                this.tid = setTimeout(() => {
+                    this.msg = '';
+                }, 500)
+
+            }
+        }
+    })
+</script>
+</body>
+</html>

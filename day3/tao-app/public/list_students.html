@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <students></students>
+    <hr/>
+    <students></students>
+    <hr/>
+    {{  welcome }}
+</div>
+
+<script>
+    Vue.component('students', {
+        template: `
+            <div>
+                <h1>Hello student</h1>
+                <ul>
+                    <li v-for="student of students">
+                        {{ student.name }}, {{ student.age }}
+                    </li>
+                </ul>
+                <button @click="add_student">add Student</button>
+            </div>
+        `,
+        data() { // 组件的 data 模型必须 写成 函数的形式, return 返回的对象最为模型对象
+            return {
+                students: [
+                    {name: '张三', age: 18},
+                    {name: '李四', age: 28},
+                    {name: '王五', age: 21},
+                ]
+            }
+        },
+        methods: {
+            add_student() {
+                this.students.push({
+                    name: '赵六',
+                    age: 22
+                })
+            }
+        }
+    });
+    new Vue({
+        el: '#app',
+        data () {
+            return {
+                welcome: 'hello !!!'
+            }
+        }
+    })
+</script>
+</body>
+</html>
