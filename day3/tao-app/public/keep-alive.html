@@ -12,10 +12,8 @@
         <component :is="compName[pos]"></component>
     </keep-alive>
     <button @click="pos = !pos">switch</button>
-
 </div>
 <script>
-
     Vue.component('testAAA', {
         template: `
             <div>

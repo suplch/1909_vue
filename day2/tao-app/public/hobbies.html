@@ -10,7 +10,6 @@
         <select v-model="selectedHobbies" multiple style="height: 500px; width: 200px; float:left;">
             <option v-for="hobby of hobbies" v-bind:value="hobby">{{hobby.text}}</option>
         </select>
-
         <select v-model="selectedMyHobbies" multiple style="height: 500px; width: 200px; float: right">
             <option v-for="hobby of myHobbies" v-bind:value="hobby">{{hobby.text}}</option>
         </select>
@@ -48,7 +47,6 @@
                 });
                 this.selectedHobbies = [];
             },
-
             moveLeft() {
                 for (let h of this.selectedMyHobbies) {
                     this.hobbies.push(h);

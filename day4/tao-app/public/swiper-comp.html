@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link href="lib/swiper.min.css" rel="stylesheet">
+    <script src="lib/vue.js"></script>
+    <script src="lib/swiper.min.js"></script>
+    <style>
+        html, body {
+            position: relative;
+            height: 100%;
+        }
+        body {
+            background: #eee;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color:#000;
+            margin: 0;
+            padding: 0;
+        }
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+        }
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
+
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+        .swiper-wrapper {
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <my-swiper :items="students" idname="code">
+        <template v-for="stu of students"  v-slot:[stu.code]>
+            name: {{stu.name}}, age: {{ stu.age }}
+        </template>
+    </my-swiper>
+</div>
+
+<script>
+    Vue.component('my-swiper', {
+        props: ['items', 'idname'],
+        template: `
+            <div ref="sp" class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div v-for="(item, index) of items" class="swiper-slide">
+                        <slot :name="item[idname]"></slot>
+                    </div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        `,
+        mounted() {
+            var swiper = new Swiper(this.$refs.sp, {
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+            });
+        }
+    });
+
+    new Vue({
+        el: '#app',
+        data: {
+            students: [
+                {code: '111', name: '张三', age: 18},
+                {code: '222', name: '李四', age: 28},
+                {code: '333', name: '王五', age: 33},
+            ]
+        }
+    })
+</script>
+
+<script>
+
+</script>
+</body>
+</html>
