@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+    <style>
+        ul {
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <tree-node v-bind:node="root"></tree-node>
+</div>
+<script >
+
+    Vue.component('tree-node', {
+        props: ['node', 'parentnode'],
+        template: `
+            <div>
+                {{ node.name }}
+                <button v-if="parentnode" @click="del(node, parentnode)">删除</button>
+                <button @click="add(node)">添加</button>
+                <ul v-if="node.children">
+                    <li v-for="subnode of node.children">
+                        <tree-node :node="subnode" :parentnode="node"></tree-node>
+                    </li>
+                </ul>
+            </div>
+        `,
+        methods: {
+            del(node, parent) {
+                if (parent) {
+                    let position = parent.children.indexOf(node);
+                    parent.children.splice(position, 1);
+                }
+            },
+            add(node) {
+                if (!node.children) {
+                    Vue.set(node, 'children', []);
+                }
+
+                let name = window.prompt('请输入名称')
+
+                node.children.push({
+                    name: name
+                });
+            }
+        }
+    });
+    new Vue({
+        el: '#app',
+        data: {
+            root: {
+                name: '中国',
+                children: [
+                    {
+                        name: '广东',
+                        children: [
+                            {
+                                name: '深圳',
+                                children: [
+                                    {
+                                        name: '宝安区',
+                                        children: [
+                                            {
+                                                name: '西部硅谷'
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: '湖南',
+                        children: [
+                            {
+                                name: '长沙',
+                                children: [
+                                    {
+                                        name: '望城'
+                                    }, {
+                                        name: '长沙县'
+                                    }
+                                ]
+                            },
+                            {
+                                name: '邵阳'
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    })
+</script>
+</body>
+</html>

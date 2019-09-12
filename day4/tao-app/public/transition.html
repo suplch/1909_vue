@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+    <style>
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 5s;
+        }
+        .fade-enter, .fade-leave-to {
+            opacity: 0;
+        }
+        .fade-enter-to, .fade-leave {
+            opacity: 1;
+        }
+
+        .move-enter-active, .move-leave-active {
+            transition: left 0.5s, opacity 0.5s;
+        }
+
+        .move-enter, .move-leave-to {
+            left: 500px;
+            opacity: 0;
+        }
+
+        .move-enter-to, .move-leave {
+            left: 0px;
+            opacity: 1;
+        }
+
+        .fadeitem-li {
+            position: relative;
+        }
+        .fadeitem-enter-active, .fadeitem-leave-active {
+            transition: opacity .5s, left .5s;
+        }
+        .fadeitem-enter, .fadeitem-leave-to {
+            opacity: 0;
+            left: -100px;
+        }
+        .fadeitem-enter-to, .fadeitem-leave {
+            opacity: 1;
+            left: 0px;
+        }
+    </style>
+</head>
+<body>
+<div id="app" style="border: 1px red solid">
+    <button @click="show = !show">切换</button>
+    <transition name="fade">
+        <p v-if="show">hello World!!!!</p>
+    </transition>
+    <transition name="move">
+        <div v-if="showbox"
+             style="border: 5px red solid; width: 300px; height: 300px; background: green; position: relative">
+            box
+        </div>
+    </transition>
+    <button @click="showbox = !showbox">切换 box</button>
+    <hr/>
+    <ul>
+        <transition-group name="fadeitem">
+            <li :key="hobby" v-for="hobby of hobbies" class="fadeitem-li">
+                {{hobby}}
+                <button @click="del(hobby)" >X</button>
+            </li>
+        </transition-group>
+    </ul>
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            show: true,
+            showbox: true,
+            hobbies: [
+                'Java',
+                'Html',
+                'css'
+            ]
+        },
+        methods: {
+            del(hobby) {
+                let position = this.hobbies.indexOf(hobby);
+                this.hobbies.splice(position, 1);
+            }
+        }
+    })
+</script>
+</body>
+</html>
