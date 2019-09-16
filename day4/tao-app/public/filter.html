@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    {{ message }}
+    <hr/>
+    {{ message | capitalize}}, {{ message | lastcapitalize}}, {{ message | capitalize | lastcapitalize}}
+    <hr/>
+    <input v-model="message"/>
+    {{ 123 | currency('¥') }}, {{ money('¥', 123) }}
+    <hr/>
+    {{ 456 | currency('$') }}, {{ money('$', 456) }}
+</div>
+
+<script>
+    Vue.filter('currency', function (value, p1) {
+        return `${p1} ${value} 元`
+    });
+
+    Vue.filter('capitalize', function (value) {
+        if (!value) {
+            return '';
+        }
+        return value[0].toUpperCase() + value.substr(1);
+    });
+
+    Vue.filter('lastcapitalize', function (value) {
+        if (!value) {
+            return '';
+        }
+        return value.substring(0, value.length - 1) +  value[value.length - 1].toUpperCase()
+    });
+
+
+    new Vue({
+        el: "#app",
+        data: {
+            message: 'welcome'
+        },
+        methods: {
+            money(p1, value) {
+                return `${p1} ${value} 元`
+            }
+        }
+    });
+</script>
+</body>
+</html>
