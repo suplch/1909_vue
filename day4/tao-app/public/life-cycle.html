@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    {{ welcome }},
+    <input v-model="welcome"/>
+    <button @click="welcome = '欢迎光临'">change</button>
+    <hr/>
+    <button @click="show = !show">切换</button>
+    <my-dialog v-if="show"></my-dialog>
+</div>
+
+<script>
+    Vue.component('my-dialog', {
+        template: `
+            <div style="border: solid 5px red">
+                {{ desc }}
+                <input v-model="desc" />
+            </div>
+        `,
+        data() {
+            return {
+                desc: 'I am a component'
+            }
+        },
+        beforeCreate() {
+            console.log('comp-创建前...');
+            alert('comp-创建前');
+        },
+        created() {
+            console.log('comp-已经被创建');
+            alert('comp-已经被创建');
+        },
+        beforeMount() {
+            console.log('comp-挂载前');
+            alert('comp-挂载前');
+        },
+        mounted() {
+            console.log('comp-挂载完毕')
+            alert('comp-挂载完毕');
+        },
+        beforeUpdate() {
+            console.log('comp-更新前')
+        },
+        updated() {
+            console.log('comp-更新后')
+        },
+        beforeDestroy() {
+            console.log('comp-准备销毁组件');
+            alert('comp-准备销毁组件');
+        },
+        destroyed() {
+            console.log('comp-已经被销毁');
+            alert('comp-已经被销毁');
+        }
+    });
+    new Vue({
+        el: '#app',
+        data: {
+            welcome: '欢迎',
+            show: true
+        },
+        beforeCreate() {
+            console.log('创建前...');
+            alert('创建前');
+        },
+        created() {
+            console.log('已经被创建');
+            alert('已经被创建');
+        },
+        beforeMount() {
+            console.log('挂载前');
+            alert('挂载前');
+        },
+        mounted() {
+            console.log('挂载完毕')
+            alert('挂载完毕');
+        },
+        beforeUpdate() {
+            console.log('更新前')
+
+        },
+        updated() {
+            console.log('更新后')
+
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+    <script src="lib/axios.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <div v-if="show">
+        <timer></timer>
+    </div>
+    <button @click="show = !show">切换</button>
+</div>
+<script>
+    Vue.component('timer', {
+        template: `
+            <div style="border: solid 5px red">
+                {{ nowTime }}
+            </div>
+        `,
+        data() {
+            return {
+                nowTime: new Date().toLocaleString()
+            }
+        },
+        mounted() { // 初始化一些资源
+            this._tid = setInterval(() => {
+                axios.get('./test.json').then((result) => {
+                    console.log(result.data)
+                });;
+
+                this.nowTime = new Date().toLocaleString();
+                console.log(this.nowTime);
+            }, 1000)
+        },
+        beforeDestroy() {  // 清除资源
+            clearInterval(this._tid);
+        }
+    });
+
+    new Vue({
+        el: '#app',
+        data: {
+            show: true
+        }
+    });
+</script>
+</body>
+</html>
