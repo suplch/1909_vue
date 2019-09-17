@@ -4,7 +4,7 @@ module.exports = {
         // 当 访问 /Product 打头的请求时 转发给 http://localhost:5000
         proxy: {
             '/Product': {
-                target: 'http://localhost:5000',
+                target: 'http://10.36.149.118:5000',
                 ws: true,
                 changeOrigin: true
             }
