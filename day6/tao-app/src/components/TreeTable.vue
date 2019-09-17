@@ -11,8 +11,7 @@
             <tr v-for="node of node_list">
                 <td v-bind:style="{paddingLeft: (node.level * 40) + 'px'}"
                     align="left">
-                    <button @click="toggleNode(node)"
-                            v-bind:style="{visibility: hasChildren(node) ? 'visible' : 'hidden'}">
+                    <button @click="toggleNode(node)">
                         {{ isOpen(node) ? '-' : '+' }}
                     </button>
                     {{ node.tree_node.name }}</td>
@@ -24,17 +23,31 @@
 </template>
 <script>
     import Vue from 'vue';
-    function visit(tree_node, level, fn) {
+    import axios from 'axios';
+    function visit(tree_node, parent_node, level, fn) {
         let obj = {
             level,
             tree_node
         };
+
+        tree_node.parent_node = parent_node;
+
         fn(obj);
         if (tree_node.open && tree_node.children) {
             for (let subnode of tree_node.children) {
-                visit(subnode, level + 1, fn);
+                visit(subnode, tree_node, level + 1, fn);
             }
         }
+    }
+
+    function getPath(tree_node) {
+        let currentNode = tree_node;
+        let path = [];
+        while (currentNode) {
+            path.unshift(currentNode.name)
+            currentNode = currentNode.parent_node;
+        }
+        return '/' + path.join('/')
     }
 
     export default {
@@ -42,45 +55,10 @@
         data() {
             return {
                 root: {
-                    name: 'app',
+                    name: '',
                     size: 1234,
                     type: 'folder',
-                    children: [
-                        {
-                            name: 'lib',
-                            size: '21',
-                            type: 'folder',
-                            children: [
-                                {
-                                    name: 'vue',
-                                    size: 123,
-                                    type: 'js'
-                                },
-                                {
-                                    name: 'style',
-                                    size: 12,
-                                    type: 'css'
-                                },
-                                {
-                                    name: 'jquery',
-                                    size: 1233,
-                                    type: 'folder',
-                                    children: [
-                                        {
-                                            name: 'jquery.min',
-                                            size: 111,
-                                            type: 'js'
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            name: 'index',
-                            size: 234,
-                            type: 'html'
-                        }
-                    ]
+                    children: []
                 }
             }
         },
@@ -90,23 +68,32 @@
                     Vue.set(node.tree_node, 'open', false)
                 } else {
                     Vue.set(node.tree_node, 'open', true)
+                    let path = getPath(node.tree_node);
+                    axios.get('/fs?path=' + path).then((result) => {
+                        console.log(result.data)
+
+                        Vue.set(node.tree_node, 'children', result.data)
+                    })
                 }
             },
             isOpen(node) {
-                if (!node.tree_node.children || node.tree_node.children.length === 0) {
+                if (!node.tree_node.children
+                    || node.tree_node.children.length === 0) {
+
                     return false;
                 }
 
                 return node.tree_node.open
             },
             hasChildren(node) {
-                return node.tree_node.children && node.tree_node.children.length  > 0
+                return node.tree_node.children
+                    && node.tree_node.children.length  > 0
             }
         },
         computed: {
             node_list() {
                 let list = [];
-                visit(this.root, 0, (obj) => {
+                visit(this.root, null, 0, (obj) => {
                     console.log(' '.repeat(obj.level*4),
                         obj.tree_node.name,
                         obj.tree_node.size,

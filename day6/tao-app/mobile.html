@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="pixelScale.js"></script>
+
+    <title>Title</title>
+    <style>
+        ul {
+            font-size: 0.32rem;
+            list-style: none;
+            background: yellow;
+        }
+        #list {
+            position: absolute;
+            top: 0.10rem;
+            left: 0.10rem;
+            right: 0.10rem;
+        }
+        #list li {
+            margin: 0.10rem 0rem 0.10rem 0.05rem;
+            background: orange;
+            height: 0.8rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div style="background: red; width: 3.75rem; height: 100px"></div>
+    <div style="background: green; width: 3.75rem; height: 100px; float: right"></div>
+
+    <div style="background: blue; position: absolute; top: 3rem; left: 0.5rem; right: 0.5rem; height: 6rem;">
+
+        <ul id="list">
+            <li>11111</li>
+            <li>22222</li>
+            <li>33333</li>
+            <li>444444</li>
+            <li>5555</li>
+            <li>66666</li>
+        </ul>
+
+    </div>
+
+    <div style="background: grey; position: absolute; bottom: 0rem; left: 0rem; right: 0rem; height: 1rem;"></div>
+
+    <script>
+        document.body.ontouchstart = function (event) {
+            console.log('start', event);
+        }
+
+        document.body.ontouchmove = function (event) {
+            console.log('move', event)
+        }
+    </script>
+</body>
+</html>
