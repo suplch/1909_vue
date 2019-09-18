@@ -13,6 +13,10 @@
         <div v-if="loading">
             加载中...
         </div>
+        <div>
+            类似产品
+            <router-link :to="{name: 'detail', params:{pid: '222'}}">福临门</router-link>
+        </div>
     </div>
 </template>
 
@@ -26,28 +30,49 @@
                 detail: undefined
             }
         },
-        mounted() {
-            console.log(this.$route);
-            if (sessionStorage.getItem('detail_' + this.$route.params.pid)) {
-                this.detail = JSON.parse(sessionStorage.getItem('detail_' + this.$route.params.pid));
-                this.loading = false;
-            } else {
-                this.loading = true;
-                axios.get('/product/detail?pid=' + this.$route.params.pid).then((result) => {
-                    if (result.data.status === 10000) {
-                        this.detail = result.data.product_detail;
-                        sessionStorage.setItem('detail_' + this.$route.params.pid, JSON.stringify(result.data));
-                    } else {
-                        alert(result.data.msg + ' : ' + result.data.status);
-                    }
+        methods: {
+            getDetail() {
+                console.log(this.$route);
+                if (sessionStorage.getItem('detail_' + this.$route.params.pid)) {
+                    this.detail = JSON.parse(sessionStorage.getItem('detail_'
+                        + this.$route.params.pid)).product_detail;
                     this.loading = false;
-                }).catch((err) => {
+                } else {
+                    this.loading = true;
+                    axios.get('/product/detail?pid=' + this.$route.params.pid).then((result) => {
+                        if (result.data.status === 10000) {
+                            this.detail = result.data.product_detail;
+                            sessionStorage.setItem('detail_'
+                                + this.$route.params.pid, JSON.stringify(result.data));
+                        } else {
+                            alert(result.data.msg + ' : ' + result.data.status);
+                        }
+                        this.loading = false;
+                    }).catch((err) => {
 
-                    this.loading = false;
-                });
+                        this.loading = false;
+                    });
+                }
             }
-
-
+        },
+        mounted() {
+            this.getDetail();
+        },
+        beforeRouteEnter(to, from ,next) {
+            console.log(to);
+            console.log(from);
+            next(true);
+        },
+        beforeRouteUpdate(to, from ,next) {
+            console.log(to);
+            console.log(from);
+            next(true);
+            this.getDetail();
+        },
+        beforeRouteLeave(to, from ,next) {
+            console.log(to);
+            console.log(from);
+            next(confirm('客官,真的要离开吗'));
         }
     }
 </script>

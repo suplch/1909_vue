@@ -37,7 +37,6 @@ app.get('/product/list', function (req, res) {
 });
 
 app.get('/product/detail', function (req, res) {
-
     setTimeout(() => {
         let ret = {};
         if (req.query.pid in products) {

@@ -42,8 +42,6 @@
                     this.loading = false;
                 });
             }
-
-
         },
         filters: {
             currency: function (value) {

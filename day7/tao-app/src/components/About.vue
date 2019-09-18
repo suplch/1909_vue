@@ -5,6 +5,7 @@
         <router-link v-bind:to="{name: 'copyright'}"> copyright </router-link>
 
         <router-view></router-view>
+        <router-view name="address"></router-view>
     </div>
 </template>
 

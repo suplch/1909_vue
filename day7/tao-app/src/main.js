@@ -10,6 +10,7 @@ import Copyright from './components/Copyright.vue';
 import Map from './components/Map';
 
 import ProductDetail from './components/ProductDetail';
+import Address from './components/Address';
 
 // 告诉 vue 使用 VueRouter 模块
 Vue.use(VueRouter);
@@ -26,7 +27,17 @@ const router = new VueRouter({
     },{
       name: 'detail',
       path: '/productdetail/:pid/:type',
-      component: ProductDetail
+      component: ProductDetail,
+      beforeEnter(to, from, next) {
+        console.log(to);
+        console.log(from);
+
+        if (from.name === 'products') {
+          next(true);
+        } else {
+          next(false);
+        }
+      }
     },{
       name: 'about',
       path: '/about',
@@ -36,7 +47,10 @@ const router = new VueRouter({
           name: 'contact',
           path: 'contact',
           meta: { other: '你好 哈哈 😃'},
-          component: Contact,
+          components: {
+            default: Contact,
+            address: Address
+          },
           children: [
             {
               name: 'map',
@@ -52,6 +66,17 @@ const router = new VueRouter({
       ]
     }
   ]
+});
+
+router.beforeEach((to, from, next) => {
+  console.log(to);
+  console.log(from);
+  next(true);
+});
+
+router.afterEach((to, from) => {
+  console.log(to);
+  console.log(from);
 });
 
 
