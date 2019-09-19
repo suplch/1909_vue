@@ -2,7 +2,7 @@
     <div style="border: solid 5px red">
         商品列表
         <ul>
-            <li v-for="product of products">
+            <li v-for="product of product_list">
                 <div v-if="product === currentProduct">
                     商品名称: <input ref="p_name" :value="product.name" type="text" />
                     商品价格: <input ref="p_price" :value="product.price" type="text" />
@@ -19,12 +19,17 @@
                 </button>
             </li>
         </ul>
+        <hr/>
+        <ul>
+            <li v-for="pro of productsLess100">{{ pro.name }}, {{pro.price}}</li>
+        </ul>
         合计 {{ total_price }}
         <hr/>
         当前编辑 {{ currentProduct }}
     </div>
 </template>
 <script>
+    import { mapState } from 'vuex';
     export default {
         name: "ProductList",
         methods: {
@@ -50,9 +55,14 @@
             }
         },
         computed: {
-            products() {
-                return this.$store.state.products;
-            },
+            ...mapState({
+                productsLess100(state) {
+                    return state.products.filter((product) => {
+                        return product.price < 100
+                    })
+                },
+                product_list: 'products'
+            }),
             total_price() {
                 return this.$store.getters.total_price
             },

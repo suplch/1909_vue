@@ -2,7 +2,7 @@
   <div id="app" style="border: solid 5px orange">
     hello
 
-    {{ count }}
+    {{ count }}, {{ countA }}, {{ countB }}, {{ countAdd }}
 
     <button @click="inc">+</button>
     <button @click="dec">-</button>
@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import {INCREMENT, DECREMENT} from './constant'
+import { mapState, mapGetters, mapMutations } from 'vuex';
 import ProductList from './components/ProductList';
 import AddProduct from './components/AddProduct';
 export default {
@@ -29,27 +31,42 @@ export default {
     }
   },
   computed: {
-    // 计算属性 返回 全局 store.state.count
-    count() {
-      return this.$store.state.count;
+    ...mapState([
+      'count'
+    ]),
+    ...mapGetters([
+        'countA',
+
+    ]),
+    ...mapGetters({
+      countB: 'countB'
+    }),
+    countAdd() {
+      return this.$store.getters.countAdd(500);
     }
   },
   methods: {
     inc() {
-      // 提交一个 名字叫 increment 的 mutation 突变
-      this.$store.commit('increment', 1)
+      // 提交一个 名字叫 decrement 的 mutation 突变
+      // this.$store.commit(INCREMENT, 1)
+      // 分发一个 action 动作
+      this.$store.dispatch(INCREMENT, 1)
+
     },
     dec() {
       // 提交一个 名字叫 decrement 的 mutation 突变
-      this.$store.commit('decrement', 1)
+      // this.$store.commit(DECREMENT, 1)
+      this.$store.dispatch(DECREMENT, 1)
     },
     inc10() {
       // 提交一个 名字叫 increment 的 mutation 突变
-      this.$store.commit('increment', 10)
+      // this.$store.commit(INCREMENT, 10)
+      this.$store.dispatch(INCREMENT, 10)
     },
     dec10() {
       // 提交一个 名字叫 decrement 的 mutation 突变
-      this.$store.commit('decrement', 10)
+      // this.$store.commit(DECREMENT, 10)
+      this.$store.dispatch(DECREMENT, 10)
     }
   },
   components: {
