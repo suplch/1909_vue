@@ -44,7 +44,6 @@
         }
     }
 </script>
-
 <style scoped>
 
 </style>

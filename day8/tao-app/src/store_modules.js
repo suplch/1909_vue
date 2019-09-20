@@ -1,7 +1,5 @@
 import Vue from 'vue';
-
 import Vuex from 'vuex';
-
 Vue.use(Vuex);
 
 function saveCartToStorage(state) {
@@ -81,16 +79,12 @@ const shoppingCart = {
     }
 };
 
-
 const store = new Vuex.Store({
-    state: {
-
-    },
+    state: {},
     modules: {
         goods: goodsModule,
         cart: shoppingCart
     }
 });
-
 
 export default store;
