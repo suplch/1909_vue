@@ -5,7 +5,7 @@
         </div>
         <div>
             <ul>
-                <li @click="select(type)" :class="{selectedItem: type === selectedType}" v-for="type of types">
+                <li :key="type.id" @click="select(type, index)" :class="{selectedItem: type === selectedType}" v-for="(type, index) of types">
                     {{type.name}}
                 </li>
             </ul>
@@ -27,13 +27,19 @@
             axios.get('/product/types').then((result) => {
                 this.types = result.data;
                 this.selectedType = this.types[0];
-            }).catch(() => {
-
+            }).catch((err) => {
+                console.error(err)
             })
         },
         methods: {
-            select(type){
+            select(type, index){
                 this.selectedType = type;
+                this.$emit('changeType', {
+                    data: {
+                        type,
+                        index
+                    }
+                })
             }
         }
     }

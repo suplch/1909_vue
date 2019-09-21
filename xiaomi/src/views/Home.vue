@@ -1,15 +1,55 @@
 <template>
   <div class="home">
-    <HomeHeader></HomeHeader>
+    <HomeHeader v-on:changeType="switchType($event)"></HomeHeader>
+    <transition :name="movedir">
+      <keep-alive>
+        <component :is="comps[type.id]"></component>
+      </keep-alive>
+    </transition>
+
   </div>
 </template>
 
 <script>
+
 import HomeHeader from '@/components/HomeHeader.vue';
+import GoodsList from '@/components/GoodsList.vue';
+import PhoneList from '@/components/PhoneList.vue';
 export default {
   name: 'home',
+  data() {
+    return {
+      movedir: 'move2left',
+      type: {id: '111', name: '推荐', bgColor: 'red'},
+      currentIndex: 0,
+      comps: {
+        '111': 'GoodsList',
+        '222': 'PhoneList'
+      }
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+    switchType(event) {
+
+      if (this.type.id !== event.data.type.id) {
+        this.type = event.data.type;
+        if (this.currentIndex  < event.data.index) {
+          this.movedir = 'move2left';
+        } else {
+          this.movedir = 'move2right';
+        }
+        this.currentIndex = event.data.index;
+      }
+
+    }
+  },
   components: {
-    HomeHeader
+    HomeHeader,
+    GoodsList,
+    PhoneList,
   }
 }
 </script>
@@ -26,4 +66,48 @@ export default {
     width: 100%;
     background: grey;
   }
+
+  .move2left-enter-active, .move2left-leave-active {
+    position: absolute;
+    width: 100%;
+    transition: left .5s;
+  }
+  .move2left-enter {
+    left: 7.5rem;
+  }
+
+  .move2left-enter-to {
+    left: 0px;
+  }
+
+  .move2left-leave {
+    left: 0px;
+  }
+
+  .move2left-leave-to {
+    left: -7.5rem;
+  }
+
+
+  .move2right-enter-active, .move2right-leave-active {
+    position: absolute;
+    width: 100%;
+    transition: left .5s;
+  }
+  .move2right-enter {
+    left: -7.5rem;
+  }
+
+  .move2right-enter-to {
+    left: 0px;
+  }
+
+  .move2right-leave {
+    left: 0px;
+  }
+
+  .move2right-leave-to {
+    left: 7.5rem;
+  }
+
 </style>
