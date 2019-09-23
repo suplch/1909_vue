@@ -1,7 +1,7 @@
 <template>
   <div id="app" style="font-size: 0.24rem">
     <router-view/>
-    <footer>
+    <footer ref="ft">
       <div @click="gotoPage(page)" :key="page.name" :class="{current: page === currentPage}" v-for="page of pages">{{page.text}}</div>
     </footer>
   </div>
@@ -21,18 +21,36 @@
       }
     },
     mounted() {
-      console.log(this.$route)
+      console.log(this.$route);
       for (let page of this.pages) {
-        if (page.path === location.pathname) {
+
+        let pathname;
+        if (location.hash.startsWith('#')) {
+          pathname = location.hash.substr(1);
+        } else {
+          pathname = location.pathname;
+        }
+
+        if (page.path === pathname) {
           this.currentPage = page;
           break;
         }
       }
+
+      this.$eventBus.$on('showHideNav', (flag) => {
+        if (flag) {
+          this.$refs.ft.style.bottom = '0px';
+        } else {
+          this.$refs.ft.style.bottom = '-50px';
+        }
+      })
     },
     methods: {
       gotoPage(page) {
-        this.currentPage = page;
-        this.$router.push({name: page.name});
+        if (this.currentPage !== page) {
+          this.currentPage = page;
+          this.$router.push({name: page.name});
+        }
       }
     }
   }
@@ -48,6 +66,9 @@
   }
 
   footer {
+    transition: bottom 1s;
+    background: white;
+    z-index: 2;
     position: fixed;
     bottom: 0px;
     width: 100%;

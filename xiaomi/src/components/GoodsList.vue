@@ -1,8 +1,8 @@
 <template>
     <div class="goods" :style="{backgroundColor: 'red'}">
         <ul>
-            <li :key="goods.id" v-for="goods of goods_list">
-                {{goods.name}}
+            <li @click="gotoDetail(goods)" :key="goods.id" v-for="goods of goods_list">
+                {{goods.name}}, {{ goods.desc }}
             </li>
         </ul>
     </div>
@@ -30,6 +30,9 @@
 
                 })
             },
+            gotoDetail(goods){
+                this.$router.push({name: 'detail', params: {pid: goods.id}})
+            }
         }
     }
 </script>
@@ -38,12 +41,14 @@
     .goods {
         position: absolute;
         top: 0.74rem;
+        bottom: 0.5rem;
         width: 100%;
         background: lightskyblue;
 
     }
     ul li {
-        height: 0.5rem;
+        height: 1.5rem;
+        background: orange;
         margin: 0.1rem;
     }
 </style>

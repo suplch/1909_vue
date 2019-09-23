@@ -15,6 +15,12 @@
 import HomeHeader from '@/components/HomeHeader.vue';
 import GoodsList from '@/components/GoodsList.vue';
 import PhoneList from '@/components/PhoneList.vue';
+import Smart from '@/components/Smart.vue';
+import TV from '@/components/TV.vue';
+import NoteBook from '@/components/NoteBook.vue';
+import Electric from '@/components/Electric.vue';
+import AboutLife from '@/components/AboutLife.vue';
+
 export default {
   name: 'home',
   data() {
@@ -24,12 +30,17 @@ export default {
       currentIndex: 0,
       comps: {
         '111': 'GoodsList',
-        '222': 'PhoneList'
+        '222': 'PhoneList',
+        '333': 'Smart',
+        '444': 'TV',
+        '555': 'NoteBook',
+        '666': 'Electric',
+        '777': 'AboutLife'
       }
     }
   },
   mounted() {
-
+    this.$eventBus.$emit('showHideNav', true);
   },
   methods: {
     switchType(event) {
@@ -50,6 +61,11 @@ export default {
     HomeHeader,
     GoodsList,
     PhoneList,
+    Smart,
+    TV,
+    NoteBook,
+    Electric,
+    AboutLife
   }
 }
 </script>
