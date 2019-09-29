@@ -110,7 +110,7 @@ app.post('/order/pay', function (req, res) {
     let user =  jwt.verify(req.cookies.token, 'abc');
     console.log(user);
 
-    req.body.order_id;
+    //req.body.order_id;
 
 
 
