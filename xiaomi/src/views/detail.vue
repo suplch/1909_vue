@@ -23,6 +23,7 @@
             }
         },
         mounted() {
+            this.detail = ''
             console.log(this.$route);
             this.$eventBus.$emit('showHideNav', false);
             axios.get('/product/detail?pid=' + this.$route.params.pid).then((result) => {
@@ -38,6 +39,14 @@
             }
         }
     }
+    //....
+    //....
+
+
+    // let f1 = comp.methods.add2Cart;
+    //
+    // f1.call(comp)
+
 </script>
 
 <style scoped>

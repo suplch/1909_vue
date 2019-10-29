@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+
+        let a = 'hello';
+        let b = 1234;
+
+        let c = /[a-z]+/g;
+
+        let d = new Date();
+
+        let e = function (a ,  b) {
+            return a * b;
+        }
+
+        let f = {
+            name: 'zhang',
+            say() {
+
+            }
+        };
+
+        let ret = e(2, 4);
+
+
+        let fs = [
+            'hello',
+            1234,
+            function () {
+                console.log('hi')
+            },
+            function () {
+
+            }
+        ];
+
+
+
+        function call(fn) {
+            fn();
+        }
+
+
+        Array.prototype.my_filter = function (fn) {
+            let ret = [];
+            for (let item of this) {
+                if (fn(item)) {
+                    ret.push(item)
+                }
+            }
+            return ret;
+        };
+
+        Array.prototype.my_map = function(fn) {
+            let ret = [];
+            for (let item of this) {
+                ret.push(fn(item))
+            }
+            return ret;
+        };
+
+        Array.prototype.my_find = function(fn) {
+
+            for (let item of this) {
+                if (fn(item)){
+                    return item;
+                }
+            }
+            return undefined;
+        };
+
+        Array.prototype.my_findInex = function(fn) {
+
+            for (let i = 0; i < this.length; i++) {
+                if (fn(this[i])){
+                    return i;
+                }
+            }
+            return -1;
+        };
+
+        let words = ['hello', 'good', 'bye', 'computer', 'keyboard', 'mouse', 'room', 'classroom', 'children'];
+        console.log(words);
+
+        function my_filter(arr, fn) {
+            let ret = [];
+            for (let item of arr) {
+                if (fn(item)) {
+                    ret.push(item)
+                }
+            }
+            return ret;
+        }
+
+
+        function makeIncBase(baseNumber) {
+
+            return function (num) {
+                return baseNumber += num
+            };
+
+        }
+
+        let inc = makeIncBase(500);
+
+
+        console.log(inc(5));
+        console.log(inc(5));
+        console.log(inc(5));
+
+
+    </script>
+</body>
+</html>
